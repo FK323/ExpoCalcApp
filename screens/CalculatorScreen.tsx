@@ -1,61 +1,68 @@
 import React, { useState } from "react";
-import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
+
+// Import components
 import Display from "../components/Display";
 import Keypad from "../components/Keypad";
+
+// Import calculator logic
 import {
-  initialState,
-  handleNumberInput,
-  handleOperation,
-  handleEquals,
-  handleClear,
-  handlePercentage,
-  handleToggleSign,
-  getDisplayExpression,
+  CalculatorState,
   CalculatorOperation,
+  initialCalculatorState,
+  handleNumberInput,
+  handleOperationInput,
+  calculateResult,
+  clearCalculator,
+  toggleSign,
+  calculatePercentage,
 } from "../utils/calculatorLogic";
 
 const CalculatorScreen: React.FC = () => {
-  const [state, setState] = useState(initialState);
+  // State to track calculator values and operations
+  const [state, setState] = useState<CalculatorState>(initialCalculatorState);
 
-  const handleNumber = (num: string) => {
-    setState((currentState) => handleNumberInput(currentState, num));
+  // Handler for number press
+  const handleNumberPress = (num: string) => {
+    setState((prevState) => handleNumberInput(prevState, num));
   };
 
-  const handleOperator = (operation: CalculatorOperation) => {
-    setState((currentState) => handleOperation(currentState, operation));
+  // Handler for operation press
+  const handleOperationPress = (operation: CalculatorOperation) => {
+    setState((prevState) => handleOperationInput(prevState, operation));
   };
 
-  const handleEqual = () => {
-    setState((currentState) => handleEquals(currentState));
+  // Handler for equals press
+  const handleEqualsPress = () => {
+    setState((prevState) => calculateResult(prevState));
   };
 
+  // Handler for clear press
   const handleClearPress = () => {
-    setState(handleClear());
+    setState(clearCalculator());
   };
 
-  const handlePercentagePress = () => {
-    setState((currentState) => handlePercentage(currentState));
-  };
-
+  // Handler for toggle sign press
   const handleToggleSignPress = () => {
-    setState((currentState) => handleToggleSign(currentState));
+    setState((prevState) => toggleSign(prevState));
+  };
+
+  // Handler for percentage press
+  const handlePercentagePress = () => {
+    setState((prevState) => calculatePercentage(prevState));
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" />
-      <View style={styles.container}>
-        <Display
-          value={state.currentValue}
-          expression={getDisplayExpression(state)}
-        />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.calculatorContainer}>
+        <Display value={state.currentValue} expression={state.expression} />
         <Keypad
-          onNumberPress={handleNumber}
-          onOperationPress={handleOperator}
+          onNumberPress={handleNumberPress}
+          onOperationPress={handleOperationPress}
+          onEqualsPress={handleEqualsPress}
           onClearPress={handleClearPress}
-          onEqualsPress={handleEqual}
-          onPercentagePress={handlePercentagePress}
           onToggleSignPress={handleToggleSignPress}
+          onPercentagePress={handlePercentagePress}
         />
       </View>
     </SafeAreaView>
@@ -63,14 +70,17 @@ const CalculatorScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#F7F7F7",
-  },
   container: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+  },
+  calculatorContainer: {
     flex: 1,
     padding: 16,
     justifyContent: "flex-end",
+    maxWidth: 400,
+    width: "100%",
+    alignSelf: "center",
   },
 });
 
