@@ -1,3 +1,4 @@
+//Hassan Mir, Fazan Khan, Imad Rana
 import React, { useState } from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
 import CalculatorScreen from "./screens/CalculatorScreen";

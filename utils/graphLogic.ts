@@ -1,3 +1,4 @@
+//Imad Rana
 import * as math from "mathjs";
 
 // Define types for graph settings

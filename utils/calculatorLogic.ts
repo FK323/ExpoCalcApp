@@ -1,3 +1,4 @@
+//Hassan Mir
 import * as math from "mathjs";
 
 // Type for calculator operations
